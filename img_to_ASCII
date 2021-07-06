@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+from PIL import Image, ImageDraw
+import numpy as np
+import math
+import pandas as pd
+
+
+# In[2]: get the path of your picture
+
+
+img = Image.open('C:/Users/*********')
+
+
+# In[3]: make the thumbnail smaller to display better
+
+
+img.thumbnail((300, 300))
+
+
+# In[4]: convert the image in black and white
+
+
+img = img.convert('L')
+
+
+# In[5]: display the image
+
+
+img
+
+
+# In[6]: store the value of each pixel inside an array
+
+
+img_array = np.array(img)
+
+
+# In[7]: convert the array into an array of string
+
+
+img_ascii = img_array.astype(str)
+
+
+# In[8]: different possible ASCII "gray" scale
+
+
+ascii_scale = ['#', '$', '@', '%', '*', '+', '=', "-", ':', '.']
+#ascii_scale = $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.]
+#ascii_scale = ['$','@','B','%','8','&','W','M','#','*','o','a','h','k','b','d','p','q','w','m','Z','O','0','Q','L','C','J','U','Y','X','z','c','v','u','n','x','r','j','f','t','/'
+#              ,'1','{',"}","[","]",'?','-','_','+','~','<','>','i','!','l',';',':',',','^','.']
+
+
+# In[9]: tie an ASCII character to a pixel value and store it
+
+
+bottom = 0
+size = math.ceil(255/len(ascii_scale))
+for i in range(0, len(ascii_scale)):
+    img_ascii[(img_array >= bottom) & (img_array < bottom + size)] = ascii_scale[i]
+    bottom += size
+
+
+# In[12]: save the array as a string into a text document
+
+
+np.savetxt("img.txt", img_ascii, fmt = "%s")
+
